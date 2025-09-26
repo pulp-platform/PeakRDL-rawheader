@@ -47,7 +47,7 @@ def get_regs(node: AddrmapNode, prefix: str = ""):
         elif isinstance(subnode, AddrmapNode) or isinstance(node, RegfileNode):
             block.append([])
             block.append([{"name": basename + "_BASE_ADDR", "num": subnode.absolute_address},
-                          {"name": basename + "_SIZE     ", "num": subnode.total_size}])
+                          {"name": basename + "_SIZE     ", "num": subnode.size}])
             for child in subnode.children():
                 block.extend(get_regs(child, basename + "_"))
         elif isinstance(subnode, MemNode):
