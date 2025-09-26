@@ -36,7 +36,8 @@ def get_regs(node: AddrmapNode, prefix: str = ""):
                 block.append([])
                 block.append([
                     {"name": start_basename + "_BASE_ADDR", "num": subnode.absolute_address},
-                    {"name": start_basename + "_SIZE     ", "num": subnode.total_size}
+                    {"name": start_basename + "_SIZE     ", "num": subnode.total_size},
+                    {"name": start_basename + "_STRIDE   ", "num": subnode.array_stride},
                 ])
 
         # Handle different subnode types
