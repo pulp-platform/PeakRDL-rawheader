@@ -1,6 +1,8 @@
-[build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+# Copyright 2025 ETH Zurich and University of Bologna.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
 [project]
 name = "peakrdl-rawheader"
