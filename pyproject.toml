@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "peakrdl-rawheader"
-dynamic = ["version"]
+version = "0.1.0"
 requires-python = ">=3.7"
 dependencies = [
     "systemrdl-compiler >= 1.29.0, < 2",
@@ -36,11 +36,6 @@ classifiers = [
 cli = [
     "peakrdl-cli >= 1.2.3",
 ]
-
-[project.urls]
-
-[tool.setuptools.dynamic]
-version = {attr = "peakrdl_rawheader.__about__.__version__"}
 
 [project.entry-points."peakrdl.exporters"]
 raw-header = "peakrdl_rawheader.__peakrdl__:HeaderGeneratorDescriptor"
