@@ -6,7 +6,6 @@
 # Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
 import os
-from itertools import product
 from peakrdl.plugins.exporter import ExporterSubcommandPlugin
 from systemrdl.node import AddrmapNode
 from mako.template import Template
@@ -71,4 +70,3 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         rendered = tmpl.render(top_name=top_name, blocks=blocks, license_str=license_str, enums=enums)
         with open(output_path, "w") as f:
             f.write(rendered)
-

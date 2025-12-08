@@ -1,14 +1,16 @@
-[build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+# Copyright 2025 ETH Zurich and University of Bologna.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
 [project]
 name = "peakrdl-rawheader"
-dynamic = ["version"]
+version = "0.1.0"
 requires-python = ">=3.7"
 dependencies = [
+    "mako>=1.2.4",
     "systemrdl-compiler >= 1.29.0, < 2",
-    "jinja2",
 ]
 
 authors = [
@@ -27,7 +29,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
 ]
@@ -37,10 +39,11 @@ cli = [
     "peakrdl-cli >= 1.2.3",
 ]
 
-[project.urls]
-
-[tool.setuptools.dynamic]
-version = {attr = "peakrdl_rawheader.__about__.__version__"}
-
 [project.entry-points."peakrdl.exporters"]
 raw-header = "peakrdl_rawheader.__peakrdl__:HeaderGeneratorDescriptor"
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
