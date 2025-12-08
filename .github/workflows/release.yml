@@ -31,7 +31,7 @@ jobs:
         run: uv publish
 
   publish-test-pypi:
-    name: Publish to PyPI
+    name: Publish to Test PyPI
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
