@@ -3,26 +3,24 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
+[build-system]
+requires = ["uv_build>=0.9.16,<0.10.0"]
+build-backend = "uv_build"
 
 [project]
 name = "peakrdl-rawheader"
 version = "0.1.1"
 requires-python = ">=3.7"
+readme = "README.md"
+description = "Generate Header files from a SystemRDL register model"
+license = {file = "LICENSE"}
 dependencies = [
     "mako>=1.2.4",
     "systemrdl-compiler >= 1.29.0, < 2",
 ]
-
-[build-system]
-requires = ["uv_build>=0.9.16,<0.10.0"]
-build-backend = "uv_build"
-
 authors = [
     {name="Michael Rogenmoser"},
 ]
-description = "Generate Header files from a SystemRDL register model"
-readme = "README.md"
-license = {file = "LICENSE"}
 keywords = [
     "SystemRDL", "PeakRDL", "CSR", "compiler", "tool", "registers", "generator",
     "C", "header", "software", "SystemVerilog",
