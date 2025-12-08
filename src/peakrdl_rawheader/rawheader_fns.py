@@ -7,38 +7,54 @@
 
 from systemrdl.node import AddrmapNode, RegNode, MemNode, RegfileNode, FieldNode
 
+
 def get_regs(node: AddrmapNode, prefix: str = ""):
     """Recursively get all registers in the addrmap tree."""
     start_basename = prefix + node.inst_name.upper()
     nodes = []
     block = []
     subblock = []
+
+    # Create a list of nodes, from the nodes in an array node or from a single scalar node
     if node.is_array:
         nodes = node.unrolled()
     else:
         nodes = [node]
 
-    for subnode in nodes:
+    # Iterate over subnodes
+    for i, subnode in enumerate(nodes):
+
+        # If subnode is part of an array, add the index within the array to its basename.
+        # Also, add a block for the base address and total size of the array.
         basename = start_basename
         if node.is_array:
             for idx in subnode.current_idx:
                 basename += "_" + str(idx)
+            # absolute_address cannot be called on array nodes, so we get the information
+            # from subnode 0
+            if i == 0:
+                block.append([])
+                block.append([
+                    {"name": start_basename + "_BASE_ADDR", "num": subnode.absolute_address},
+                    {"name": start_basename + "_SIZE     ", "num": subnode.total_size},
+                    {"name": start_basename + "_STRIDE   ", "num": subnode.array_stride},
+                ])
+
+        # Handle different subnode types
         if isinstance(subnode, RegNode):
             subblock.extend([{"name": basename + "_REG_ADDR  ", "num": subnode.absolute_address},
                              {"name": basename + "_REG_OFFSET", "num": subnode.address_offset}])
             block = [subblock]
         elif isinstance(subnode, AddrmapNode) or isinstance(node, RegfileNode):
             block.append([])
-            block.append([{ "name": basename + "_BASE_ADDR", "num": subnode.absolute_address },
-                          { "name": basename + "_SIZE     ", "num": subnode.total_size }])
-
+            block.append([{"name": basename + "_BASE_ADDR", "num": subnode.absolute_address},
+                          {"name": basename + "_SIZE     ", "num": subnode.size}])
             for child in subnode.children():
                 block.extend(get_regs(child, basename + "_"))
-
         elif isinstance(subnode, MemNode):
             block.append([])
             block.append([{"name": basename + "_BASE_ADDR", "num": subnode.absolute_address},
-                          {"name": basename + "_SIZE     ", "num": subnode.total_size}])
+                          {"name": basename + "_SIZE     ", "num": subnode.size}])
         else:
             print(f"Unknown node type: {type(node)}")
 

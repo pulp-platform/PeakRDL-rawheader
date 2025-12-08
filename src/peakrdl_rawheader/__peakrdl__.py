@@ -67,8 +67,6 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         blocks = get_regs(top_node)
         enums = get_enums(top_node)
 
-        # print(enums)
-
         # Render and write
         rendered = tmpl.render(top_name=top_name, blocks=blocks, license_str=license_str, enums=enums)
         with open(output_path, "w") as f:
