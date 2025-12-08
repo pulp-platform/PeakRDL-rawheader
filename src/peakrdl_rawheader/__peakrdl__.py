@@ -10,6 +10,7 @@ from peakrdl.plugins.exporter import ExporterSubcommandPlugin
 from systemrdl.node import AddrmapNode
 from mako.template import Template
 from peakrdl_rawheader.rawheader_fns import get_regs, get_enums
+from importlib.resources import files
 
 class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
     short_desc = "Generate C header with block base addresses and register offsets via Mako"
@@ -49,15 +50,16 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         if options.template:
             template_path = options.template
         else:
+            tpl_dir = files("peakrdl_rawheader") / "templates"
             if options.format == "c":
-                template_path = os.path.join(os.path.dirname(__file__), "templates/c_header.tpl")
+                template_path = tpl_dir / "c_header.tpl"
             elif options.format == "svh":
-                template_path = os.path.join(os.path.dirname(__file__), "templates/svh.tpl")
+                template_path = tpl_dir / "svh.tpl"
             elif options.format == "svpkg":
-                template_path = os.path.join(os.path.dirname(__file__), "templates/svpkg.tpl")
+                template_path = tpl_dir / "svpkg.tpl"
             else:
                 # Default to C header template (shouldn't happen due to choices constraint)
-                template_path = os.path.join(os.path.dirname(__file__), "templates/c_header.tpl")
+                template_path = tpl_dir / "c_header.tpl"
         with open(template_path, "r") as tf:
             tmpl = Template(tf.read())
 
