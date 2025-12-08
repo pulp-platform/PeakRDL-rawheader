@@ -5,7 +5,6 @@
 #
 # Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
-import os
 from peakrdl.plugins.exporter import ExporterSubcommandPlugin
 from systemrdl.node import AddrmapNode
 from mako.template import Template
