@@ -52,7 +52,6 @@ function automatic longint unsigned ${"_".join(reg["name"] + ["base_addr"]).uppe
 endfunction
 localparam longint unsigned ${"_".join(reg["name"] + ["num"]).upper()} = ${fmt_hex(reg["array_info"][-1]["dim"][-1])};
 % endif
-localparam longint unsigned ${"_".join(reg["name"] + ["offset"]).upper()} = ${fmt_hex(reg["offset"])};
 % endfor
 
 % for enum in enums:

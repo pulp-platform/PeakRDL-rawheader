@@ -47,7 +47,6 @@ def addr_expr(base, array_info):
 `define ${"_".join(reg["name"] + ["base_addr"]).upper()}(${idx_expr(reg["array_info"])}) (${addr_expr(reg["addr"], reg["array_info"])} )
 `define ${"_".join(reg["name"] + ["num"]).upper()} ${fmt_hex(reg["array_info"][-1]["dim"][-1])}
 % endif
-`define ${"_".join(reg["name"] + ["offset"]).upper()} ${fmt_hex(reg["offset"])}
 
 % endfor
 
