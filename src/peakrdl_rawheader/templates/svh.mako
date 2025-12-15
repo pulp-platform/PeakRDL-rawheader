@@ -49,4 +49,11 @@ def addr_expr(base, array_info):
 
 % endfor
 
+% for enum in enums:
+% for field in enum["choices"]:
+`define ${enum["name"].upper()}__${field["name"]} ${field["value"]}
+% endfor
+
+% endfor
+
 `endif /* ${top_name.upper() + "_SVH"} */

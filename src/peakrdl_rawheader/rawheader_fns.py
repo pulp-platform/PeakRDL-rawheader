@@ -71,19 +71,17 @@ def get_enums(top_node: AddrmapNode, prefix: str = ""):
     for node in top_node.descendants(FieldNode):
         if isinstance(node, FieldNode) and node.get_property("encode") is not None:
             enum = node.get_property("encode")
-            enum_name = enum.type_name.upper()
-            qualified_name = f"{enum_name}"
 
-            if qualified_name in seen_enum_keys:
+            if enum.type_name in seen_enum_keys:
                 continue
-            seen_enum_keys.add(qualified_name)
+            seen_enum_keys.add(enum.type_name)
 
             choices = []
             for enum_member in enum:
                 choices.append({"name": enum_member.name.upper(), "value": enum_member.value, "desc": enum_member.rdl_desc})
 
             enums.append({
-                "name": qualified_name,
+                "name": enum.type_name,
                 "choices": choices
             })
 

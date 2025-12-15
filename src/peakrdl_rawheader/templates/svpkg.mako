@@ -19,6 +19,9 @@ def addr_expr(base, array_info):
             continue
         terms.append(f"{a['idx_name']}_idx * {fmt_hex(a['stride'])}")
     return " + ".join(terms)
+
+def clog2(x):
+    return (x - 1).bit_length()
 %>
 
 % for block in blocks:
@@ -48,6 +51,15 @@ function automatic longint unsigned ${"_".join(reg["name"] + ["base_addr"]).uppe
 endfunction
 % endif
 localparam longint unsigned ${"_".join(reg["name"] + ["offset"]).upper()} = ${fmt_hex(reg["offset"])}
+% endfor
+
+% for enum in enums:
+<% enum_width = clog2(len(enum["choices"])) %>
+typedef enum logic [${enum_width-1}:0] {
+% for field in enum["choices"]:
+    ${field["name"].upper()} = ${enum_width}'d${field["value"]},
+% endfor
+} ${enum["name"]}_e;
 % endfor
 
 
