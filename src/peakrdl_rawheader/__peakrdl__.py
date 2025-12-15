@@ -51,16 +51,8 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         if options.template:
             template_path = options.template
         else:
-            tpl_dir = files("peakrdl_rawheader") / "templates"
-            if options.format == "c":
-                template_path = tpl_dir / "c_header.tpl"
-            elif options.format == "svh":
-                template_path = tpl_dir / "svh.tpl"
-            elif options.format == "svpkg":
-                template_path = tpl_dir / "svpkg.tpl"
-            else:
-                # Default to C header template (shouldn't happen due to choices constraint)
-                template_path = tpl_dir / "c_header.tpl"
+            template_path = files("peakrdl_rawheader") / "templates" / (options.format + ".mako")
+
         with open(template_path, "r") as tf:
             tmpl = Template(tf.read())
 
