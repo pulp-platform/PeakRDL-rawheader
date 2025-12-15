@@ -9,50 +9,46 @@ package ${top_name + "_addrmap_pkg"};
 def fmt_hex(num):
     return f"64'h{num:08X}"
 
-def expr(base, params):
-    terms = [fmt_hex(base)]
-    for param in params:
-        if param["stride"] == 0:
-            continue
-        terms.append(f"({param['name']}) * {fmt_hex(param['stride'])}")
-    return " + ".join(terms)
+def idx_expr(array_info):
+    return ", ".join([f"input int unsigned {a['idx_name']}_idx" for a in array_info])
 
-def param_decl(params):
-    return ", ".join(f\"input int unsigned {p['name']}\" for p in params)
+def addr_expr(base, array_info):
+    terms = [fmt_hex(base)]
+    for a in array_info:
+        if a["stride"] == 0:
+            continue
+        terms.append(f"{a['idx_name']}_idx * {fmt_hex(a['stride'])}")
+    return " + ".join(terms)
 %>
 
-% if flat:
-% for blk in blocks:
-% for entry in blk:
-localparam longint unsigned ${entry["name"]} = ${"64'h{num:08X}".format(num = entry["num"])};
-% endfor
-
-% endfor
+% for block in blocks:
+% if not block["array_info"]:
+localparam longint unsigned ${"_".join(block["name"] + ["base_addr"]).upper()} = ${fmt_hex(block["addr"])}
 % else:
-% for idx, blk in enumerate(blocks):
-% for entry in blk:
-localparam longint unsigned ${entry["name"]} = ${fmt_hex(entry["num"])};
-% endfor
-% if idx + 1 < len(blocks):
-
+function automatic longint unsigned ${"_".join(block["name"] + ["base_addr"]).upper()}(${idx_expr(block["array_info"])});
+    return ${addr_expr(block["addr"], block["array_info"])};
+endfunction
 % endif
+localparam longint unsigned ${"_".join(block["name"] + ["size"]).upper()} = ${fmt_hex(block["size"])}
+% if "stride" in block:
+localparam longint unsigned ${"_".join(block["name"] + ["stride"]).upper()} = ${fmt_hex(block["stride"])}
+% endif
+% if "total_size" in block:
+localparam longint unsigned ${"_".join(block["name"] + ["total_size"]).upper()} = ${fmt_hex(block["total_size"])}
+% endif
+
 % endfor
 
 % for reg in registers:
-<% params = reg["addr_params"] %>
-% if params:
-function automatic longint unsigned ${reg["name"]}_REG_ADDR(${param_decl(params)});
-    return ${expr(reg["addr_base"], params)};
-endfunction
-function automatic longint unsigned ${reg["name"]}_REG_OFFSET(${param_decl(params)});
-    return ${expr(reg["offset_base"], params[reg["reg_param_offset"]:])};
-endfunction
+% if not reg["array_info"]:
+localparam longint unsigned ${"_".join(reg["name"] + ["base_addr"]).upper()} = ${fmt_hex(reg["addr"])}
 % else:
-localparam longint unsigned ${reg["name"]}_REG_ADDR = ${fmt_hex(reg["addr_base"])};
-localparam longint unsigned ${reg["name"]}_REG_OFFSET = ${fmt_hex(reg["offset_base"])};
+function automatic longint unsigned ${"_".join(reg["name"] + ["base_addr"]).upper()}(${idx_expr(reg["array_info"])});
+    return ${addr_expr(reg["addr"], reg["array_info"])};
+endfunction
 % endif
-
+localparam longint unsigned ${"_".join(reg["name"] + ["offset"]).upper()} = ${fmt_hex(reg["offset"])}
 % endfor
-% endif
+
 
 endpackage;
