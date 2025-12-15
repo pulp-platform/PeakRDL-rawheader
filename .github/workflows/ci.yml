@@ -42,3 +42,17 @@ jobs:
       - name: Lint SystemVerilog Package
         run: |
           verilator --lint-only tests/svh_pkg.sv -Itests
+
+  c:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Generate package
+        run: |
+          uv run --extra cli peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
+      - name: Lint C Header
+        run: |
+          sudo apt-get install -y cppcheck
+          cppcheck --enable=all --error-exitcode=1 addrmap.h
