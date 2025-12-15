@@ -1,0 +1,26 @@
+# Copyright 2023 ETH Zurich and University of Bologna.
+# Solderpad Hardware License, Version 0.51, see LICENSE for details.
+# SPDX-License-Identifier: SHL-0.51
+
+# Author: Tim Fischer <fischeti@iis.ee.ethz.ch>
+
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  svpkg:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: veryl-lang/setup-verilator@v1
+      - name: Run SystemVerilog Linter
+        run: |
+          uv run peakrdl rawheader tests/picobello.rdl -o svpkg.sv
+      - name: Lint SystemVerilog Package
+        run: |
+          verilator --lint-only svpkg.sv
