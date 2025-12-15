@@ -9,11 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `--flat` option to emit the legacy fully unrolled address list.
+- Render enums in `svh` and `svpkg` formats (previously only in `c`).
+- Render array dimensions as `*_NUM`
 
 ### Changed
 
 - Array instances now generate indexed macros/functions by default instead of enumerating every element.
+- Changed behaviour of `SIZE` with array instances.
+
+### Removed
+
+- Removed `*_OFFSET` definitions for registers and register blocks.
 
 ## [0.1.3] - 2025-12-08
 
