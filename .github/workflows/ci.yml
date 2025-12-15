@@ -21,9 +21,24 @@ jobs:
         uses: astral-sh/setup-uv@v6
       - name: Generate package
         run: |
-          uv run --extra cli peakrdl raw-header tests/picobello.rdl --format svpkg -o svpkg.sv
+          uv run --extra cli peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
       - name: Setup Verilator
         uses: veryl-lang/setup-verilator@v1
       - name: Lint SystemVerilog Package
         run: |
-          verilator --lint-only svpkg.sv
+          verilator --lint-only addrmap.sv
+
+  svh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Generate package
+        run: |
+          uv run --extra cli peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
+      - name: Setup Verilator
+        uses: veryl-lang/setup-verilator@v1
+      - name: Lint SystemVerilog Package
+        run: |
+          verilator --lint-only tests/svh_pkg.sv -Itests
