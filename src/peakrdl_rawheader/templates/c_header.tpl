@@ -10,44 +10,45 @@
 def fmt_hex(num):
     return f"0x{num:08X}"
 
-def expr(base, params):
+def idx_expr(array_info):
+    return ", ".join([f"{a['idx_name']}_idx" for a in array_info])
+
+def addr_expr(base, array_info):
     terms = [fmt_hex(base)]
-    for param in params:
-        if param["stride"] == 0:
+    for a in array_info:
+        if a["stride"] == 0:
             continue
-        terms.append(f"({param['name']}) * {fmt_hex(param['stride'])}")
+        terms.append(f"({a['idx_name']}_idx) * {fmt_hex(a['stride'])}")
     return " + ".join(terms)
+
 %>
 
-% if flat:
-% for blk in blocks:
-% for entry in blk:
-#define ${entry["name"]} ${"0x{num:08X}".format(num = entry["num"])}
-% endfor
-
-% endfor
+% for block in blocks:
+% if not block["array_info"]:
+#define ${"_".join(block["name"] + ["base_addr"]).upper()} ${fmt_hex(block["addr"])}
 % else:
-% for idx, blk in enumerate(blocks):
-% for entry in blk:
-#define ${entry["name"]} ${fmt_hex(entry["num"])}
-% endfor
-% if idx + 1 < len(blocks):
-
+#define ${"_".join(block["name"] + ["base_addr"]).upper()}(${idx_expr(block["array_info"])}) (${addr_expr(block["addr"], block["array_info"])} )
 % endif
+#define ${"_".join(block["name"] + ["size"]).upper()} ${fmt_hex(block["size"])}
+% if "stride" in block:
+#define ${"_".join(block["name"] + ["stride"]).upper()} ${fmt_hex(block["stride"])}
+% endif
+% if "total_size" in block:
+#define ${"_".join(block["name"] + ["total_size"]).upper()} ${fmt_hex(block["total_size"])}
+% endif
+
 % endfor
 
 % for reg in registers:
-<% params = [p["name"] for p in reg["addr_params"]] %>
-% if params:
-#define ${reg["name"]}_REG_ADDR(${", ".join(params)}) (${expr(reg["addr_base"], reg["addr_params"])})
-#define ${reg["name"]}_REG_OFFSET(${", ".join(params)}) (${expr(reg["offset_base"], reg["addr_params"][reg["reg_param_offset"]:])})
+% if not reg["array_info"]:
+#define ${"_".join(reg["name"] + ["base_addr"]).upper()} ${fmt_hex(reg["addr"])}
 % else:
-#define ${reg["name"]}_REG_ADDR ${fmt_hex(reg["addr_base"])}
-#define ${reg["name"]}_REG_OFFSET ${fmt_hex(reg["offset_base"])}
+#define ${"_".join(reg["name"] + ["base_addr"]).upper()}(${idx_expr(reg["array_info"])}) (${addr_expr(reg["addr"], reg["array_info"])} )
 % endif
+#define ${"_".join(reg["name"] + ["offset"]).upper()} ${fmt_hex(reg["offset"])}
 
 % endfor
-% endif
+
 % for enum in enums:
 % for field in enum["choices"]:
 #define ${enum["name"]}__${field["name"]} ${field["value"]}

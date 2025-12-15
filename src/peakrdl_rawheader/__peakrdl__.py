@@ -37,10 +37,6 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             "--license_str", default=None,
             help="License string to include in the header file"
         )
-        arg_group.add_argument(
-            "--flat", action="store_true",
-            help="Emit fully unrolled constants instead of the default indexed macros"
-        )
 
     def do_export(self, top_node: AddrmapNode, options):
         output_path = options.output
@@ -69,7 +65,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             tmpl = Template(tf.read())
 
         # Gather data for the template
-        blocks, registers = get_layout(top_node, flat=options.flat)
+        blocks, registers = get_layout(top_node)
         enums = get_enums(top_node)
 
         # Render and write
@@ -78,8 +74,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             blocks=blocks,
             registers=registers,
             license_str=license_str,
-            enums=enums,
-            flat=options.flat,
+            enums=enums
         )
         with open(output_path, "w") as f:
             f.write(rendered)
