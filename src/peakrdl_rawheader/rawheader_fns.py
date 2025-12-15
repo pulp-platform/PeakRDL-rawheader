@@ -3,7 +3,9 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 #
-# Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
+# Authors:
+# - Michael Rogenmoser <michaero@iis.ee.ethz.ch>
+# - Tim Fischer <fischeti@iis.ee.ethz.ch>
 
 from typing import Dict, List, Tuple
 
@@ -49,10 +51,12 @@ def _collect_node(node, name: List[str], array_info: List[Dict[str, int]], block
 
     match node:
         case AddrmapNode() | RegfileNode():
+            # `addrmap` and `regfile` can have children, which are handled recursively
             for child in node.children():
                 _collect_node(child, name + [node.inst_name], array_info + _build_array_info(node), blocks, registers)
 
 def _build_array_info(node):
+    """Build array info dict for a node if it is an array."""
     if not node.is_array:
         return []
     return [{
@@ -62,7 +66,7 @@ def _build_array_info(node):
         "stride": node.array_stride,
     }]
 
-def get_enums(top_node: AddrmapNode, prefix: str = ""):
+def get_enums(top_node: AddrmapNode):
     """Recursively get all enums in the addrmap tree."""
 
     # Collect unique enums
