@@ -21,7 +21,7 @@ jobs:
         uses: astral-sh/setup-uv@v6
       - name: Generate package
         run: |
-          uv run peakrdl rawheader tests/picobello.rdl -o svpkg.sv
+          uv run --extra cli peakrdl rawheader tests/picobello.rdl -o svpkg.sv
       - name: Setup Verilator
         uses: veryl-lang/setup-verilator@v1
       - name: Lint SystemVerilog Package
