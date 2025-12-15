@@ -5,11 +5,13 @@
 #
 # Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
+from importlib.resources import files
+
+from mako.template import Template
 from peakrdl.plugins.exporter import ExporterSubcommandPlugin
 from systemrdl.node import AddrmapNode
-from mako.template import Template
-from peakrdl_rawheader.rawheader_fns import get_regs, get_enums
-from importlib.resources import files
+
+from peakrdl_rawheader.rawheader_fns import get_enums, get_layout
 
 class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
     short_desc = "Generate C header with block base addresses and register offsets via Mako"
@@ -34,6 +36,10 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         arg_group.add_argument(
             "--license_str", default=None,
             help="License string to include in the header file"
+        )
+        arg_group.add_argument(
+            "--flat", action="store_true",
+            help="Emit fully unrolled constants instead of the default indexed macros"
         )
 
     def do_export(self, top_node: AddrmapNode, options):
@@ -62,12 +68,18 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         with open(template_path, "r") as tf:
             tmpl = Template(tf.read())
 
-        # Get list for template
-        # List consists of blocks that have a list of entries with name (addr, offset, size, or other) and a number
-        blocks = get_regs(top_node)
+        # Gather data for the template
+        blocks, registers = get_layout(top_node, flat=options.flat)
         enums = get_enums(top_node)
 
         # Render and write
-        rendered = tmpl.render(top_name=top_name, blocks=blocks, license_str=license_str, enums=enums)
+        rendered = tmpl.render(
+            top_name=top_name,
+            blocks=blocks,
+            registers=registers,
+            license_str=license_str,
+            enums=enums,
+            flat=options.flat,
+        )
         with open(output_path, "w") as f:
             f.write(rendered)
