@@ -31,6 +31,7 @@ localparam longint unsigned ${"_".join(block["name"] + ["base_addr"]).upper()} =
 function automatic longint unsigned ${"_".join(block["name"] + ["base_addr"]).upper()}(${idx_expr(block["array_info"])});
     return ${addr_expr(block["addr"], block["array_info"])};
 endfunction
+localparam longint unsigned ${"_".join(block["name"] + ["num"]).upper()} = ${fmt_hex(block["array_info"][-1]["dim"][-1])};
 % endif
 localparam longint unsigned ${"_".join(block["name"] + ["size"]).upper()} = ${fmt_hex(block["size"])};
 % if "stride" in block:
@@ -49,6 +50,7 @@ localparam longint unsigned ${"_".join(reg["name"] + ["base_addr"]).upper()} = $
 function automatic longint unsigned ${"_".join(reg["name"] + ["base_addr"]).upper()}(${idx_expr(reg["array_info"])});
     return ${addr_expr(reg["addr"], reg["array_info"])};
 endfunction
+localparam longint unsigned ${"_".join(reg["name"] + ["num"]).upper()} = ${fmt_hex(reg["array_info"][-1]["dim"][-1])};
 % endif
 localparam longint unsigned ${"_".join(reg["name"] + ["offset"]).upper()} = ${fmt_hex(reg["offset"])};
 % endfor

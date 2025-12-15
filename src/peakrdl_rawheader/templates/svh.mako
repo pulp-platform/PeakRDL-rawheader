@@ -28,6 +28,7 @@ def addr_expr(base, array_info):
 `define ${"_".join(block["name"] + ["base_addr"]).upper()} ${fmt_hex(block["addr"])}
 % else:
 `define ${"_".join(block["name"] + ["base_addr"]).upper()}(${idx_expr(block["array_info"])}) (${addr_expr(block["addr"], block["array_info"])} )
+`define ${"_".join(block["name"] + ["num"]).upper()} ${fmt_hex(block["array_info"][-1]["dim"][-1])}
 % endif
 `define ${"_".join(block["name"] + ["size"]).upper()} ${fmt_hex(block["size"])}
 % if "stride" in block:
@@ -44,6 +45,7 @@ def addr_expr(base, array_info):
 `define ${"_".join(reg["name"] + ["base_addr"]).upper()} ${fmt_hex(reg["addr"])}
 % else:
 `define ${"_".join(reg["name"] + ["base_addr"]).upper()}(${idx_expr(reg["array_info"])}) (${addr_expr(reg["addr"], reg["array_info"])} )
+`define ${"_".join(reg["name"] + ["num"]).upper()} ${fmt_hex(reg["array_info"][-1]["dim"][-1])}
 % endif
 `define ${"_".join(reg["name"] + ["offset"]).upper()} ${fmt_hex(reg["offset"])}
 
