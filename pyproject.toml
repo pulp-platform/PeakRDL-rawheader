@@ -17,6 +17,7 @@ license = {file = "LICENSE"}
 dependencies = [
     "mako>=1.2.4",
     "systemrdl-compiler >= 1.29.0, < 2",
+    "pytest"
 ]
 authors = [
     {name="Michael Rogenmoser"},
@@ -49,3 +50,8 @@ name = "testpypi"
 url = "https://test.pypi.org/simple/"
 publish-url = "https://test.pypi.org/legacy/"
 explicit = true
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "peakrdl_rawheader"
+]

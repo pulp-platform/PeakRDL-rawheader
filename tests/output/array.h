@@ -1,0 +1,17 @@
+
+#ifndef TOP_H
+#define TOP_H
+
+#define TOP_BASE_ADDR 0x00000000
+#define TOP_SIZE 0x70800000
+
+#define TOP_ARRAY_BASE_ADDR(array_idx) (0x70000000 + (array_idx * 0x00100000) )
+#define TOP_ARRAY_NUM 0x00000008
+#define TOP_ARRAY_SIZE 0x00100000
+#define TOP_ARRAY_STRIDE 0x00100000
+#define TOP_ARRAY_TOTAL_SIZE 0x00800000
+
+
+
+
+#endif /* TOP_H */

@@ -36,7 +36,6 @@ def _collect_node(node, name: List[str], array_info: List[Dict[str, int]], block
             })
             return
 
-
         case AddrmapNode() | RegfileNode() | MemNode():
             block = {
                 "name": name + [node.inst_name],
@@ -55,6 +54,7 @@ def _collect_node(node, name: List[str], array_info: List[Dict[str, int]], block
             for child in node.children():
                 _collect_node(child, name + [node.inst_name], array_info + _build_array_info(node), blocks, registers)
 
+
 def _build_array_info(node):
     """Build array info dict for a node if it is an array."""
     if not node.is_array:
@@ -65,6 +65,7 @@ def _build_array_info(node):
         "dim": node.array_dimensions,
         "stride": node.array_stride,
     }]
+
 
 def get_enums(top_node: AddrmapNode):
     """Recursively get all enums in the addrmap tree."""

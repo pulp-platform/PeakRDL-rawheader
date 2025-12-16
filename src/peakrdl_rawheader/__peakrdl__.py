@@ -38,8 +38,8 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             help="License string to include in the header file"
         )
 
-    def do_export(self, top_node: AddrmapNode, options):
-        output_path = options.output
+    @staticmethod
+    def format(top_node: AddrmapNode, options):
         top_name = (options.base_name or top_node.inst_name)
 
         license_str = None
@@ -68,5 +68,10 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             license_str=license_str,
             enums=enums
         )
+        return rendered
+
+    def do_export(self, top_node: AddrmapNode, options):
+        output_path = options.output
+        rendered = HeaderGeneratorDescriptor.format(top_node, options)
         with open(output_path, "w") as f:
             f.write(rendered)
