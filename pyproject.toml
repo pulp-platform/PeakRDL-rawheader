@@ -17,7 +17,6 @@ license = {file = "LICENSE"}
 dependencies = [
     "mako>=1.2.4",
     "systemrdl-compiler >= 1.29.0, < 2",
-    "pytest"
 ]
 authors = [
     {name="Michael Rogenmoser"},
@@ -40,6 +39,10 @@ classifiers = [
 [project.optional-dependencies]
 cli = [
     "peakrdl-cli >= 1.2.3",
+]
+test = [
+    "peakrdl",
+    "pytest",
 ]
 
 [project.entry-points."peakrdl.exporters"]

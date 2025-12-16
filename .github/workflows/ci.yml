@@ -22,7 +22,7 @@ jobs:
         uses: astral-sh/setup-uv@v6
       - name: Run Python unit tests
         run: |
-          uv run pytest
+          uv run --extra test pytest
 
   svpkg:
     runs-on: ubuntu-latest
