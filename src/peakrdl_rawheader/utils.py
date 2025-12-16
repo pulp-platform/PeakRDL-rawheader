@@ -19,7 +19,7 @@ def fmt_idx_expr(array_info: List[Dict[str, int]], format: str = "svh"):
     """Format array index expressions for C or SystemVerilog headers."""
     match format:
         case "c" | "svh":
-            return "".join([f"[{a['idx_name']}_idx]" for a in array_info])
+            return ", ".join([f"{a['idx_name']}_idx" for a in array_info])
         case "svpkg":
             return ", ".join([f"input int unsigned {a['idx_name']}_idx" for a in array_info])
 
