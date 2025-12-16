@@ -38,3 +38,5 @@ jobs:
             SPDX-License-Identifier: (SHL-0.51|Apache-2.0)
           exclude_paths: |
             src/peakrdl_rawheader/templates/*.mako
+            tests/input/*
+            tests/output/*
