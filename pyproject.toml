@@ -10,7 +10,7 @@ build-backend = "uv_build"
 [project]
 name = "peakrdl-rawheader"
 version = "0.1.3"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 readme = "README.md"
 description = "Generate Header files from a SystemRDL register model"
 license = {file = "LICENSE"}
@@ -40,6 +40,10 @@ classifiers = [
 cli = [
     "peakrdl-cli >= 1.2.3",
 ]
+test = [
+    "peakrdl",
+    "pytest",
+]
 
 [project.entry-points."peakrdl.exporters"]
 raw-header = "peakrdl_rawheader.__peakrdl__:HeaderGeneratorDescriptor"
@@ -49,3 +53,8 @@ name = "testpypi"
 url = "https://test.pypi.org/simple/"
 publish-url = "https://test.pypi.org/legacy/"
 explicit = true
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "peakrdl_rawheader"
+]

@@ -11,3 +11,45 @@ Currently supported formats:
 |`svpkg`|Simple SystemVerilog package|
 
 Custom templates are also supported.
+
+## Installation
+
+You can install the package via pip:
+
+```bash
+pip install peakrdl-rawheader
+```
+
+Or add it as a dependency in your `pyproject.toml` or `requirements.txt` e.g. with `uv`:
+
+```bash
+uv add peakrdl-rawheader
+```
+
+## Publishing to PyPI
+
+To create a new release on PyPI, follow the following steps:
+
+1. Bump the version number in `pyproject.toml`. If you are using `uv`, you can do this with:
+
+```bash
+uv version --bump major|minor|patch
+```
+
+You can also do this manually by editing `pyproject.toml`, but make sure you run `uv lock` afterwards to update the lock file as well.
+
+2. Edit the  the `CHANGELOG.md` to reflect the changes in this new version.
+
+3. Commit the changes:
+
+```bash
+git add pyproject.toml uv.lock CHANGELOG.md
+git commit -m "Release vX.Y.Z"
+git push origin main
+```
+
+4. Optional: You can try out publishing the package to TestPypi first by running the `publish-test-pypi` CI job that has a manual `workflow_dispatch` trigger.
+
+5. Create a new release on Github with the same version tag (e.g. `vX.Y.Z`).
+
+This will automatially trigger a Github [workflow](.github/workflows/release.yml) to build and publish the package to PyPI using [Trusted Publishing](https://docs.pypi.org/trusted-publishers/).

@@ -5,11 +5,13 @@
 #
 # Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
+from importlib.resources import files
+
+from mako.template import Template
 from peakrdl.plugins.exporter import ExporterSubcommandPlugin
 from systemrdl.node import AddrmapNode
-from mako.template import Template
-from peakrdl_rawheader.rawheader_fns import get_regs, get_enums
-from importlib.resources import files
+
+from peakrdl_rawheader.rawheader_fns import get_enums, get_layout
 
 class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
     short_desc = "Generate C header with block base addresses and register offsets via Mako"
@@ -36,8 +38,8 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             help="License string to include in the header file"
         )
 
-    def do_export(self, top_node: AddrmapNode, options):
-        output_path = options.output
+    @staticmethod
+    def format(top_node: AddrmapNode, options):
         top_name = (options.base_name or top_node.inst_name)
 
         license_str = None
@@ -49,25 +51,27 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         if options.template:
             template_path = options.template
         else:
-            tpl_dir = files("peakrdl_rawheader") / "templates"
-            if options.format == "c":
-                template_path = tpl_dir / "c_header.tpl"
-            elif options.format == "svh":
-                template_path = tpl_dir / "svh.tpl"
-            elif options.format == "svpkg":
-                template_path = tpl_dir / "svpkg.tpl"
-            else:
-                # Default to C header template (shouldn't happen due to choices constraint)
-                template_path = tpl_dir / "c_header.tpl"
+            template_path = files("peakrdl_rawheader") / "templates" / (options.format + ".mako")
+
         with open(template_path, "r") as tf:
             tmpl = Template(tf.read())
 
-        # Get list for template
-        # List consists of blocks that have a list of entries with name (addr, offset, size, or other) and a number
-        blocks = get_regs(top_node)
+        # Gather data for the template
+        blocks, registers = get_layout(top_node)
         enums = get_enums(top_node)
 
         # Render and write
-        rendered = tmpl.render(top_name=top_name, blocks=blocks, license_str=license_str, enums=enums)
+        rendered = tmpl.render(
+            top_name=top_name,
+            blocks=blocks,
+            registers=registers,
+            license_str=license_str,
+            enums=enums
+        )
+        return rendered
+
+    def do_export(self, top_node: AddrmapNode, options):
+        output_path = options.output
+        rendered = HeaderGeneratorDescriptor.format(top_node, options)
         with open(output_path, "w") as f:
             f.write(rendered)

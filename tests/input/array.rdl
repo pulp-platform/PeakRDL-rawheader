@@ -1,0 +1,5 @@
+addrmap top {
+
+  external mem { mementries = 0x40000; memwidth = 32; } array[8] @0x70000000 += 0x100000;
+
+};
