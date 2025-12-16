@@ -30,7 +30,7 @@ uv add peakrdl-rawheader
 
 To create a new release on PyPI, follow the following steps:
 
-1.  `pyproject.toml`:
+1. Bump the version number in `pyproject.toml`. If you are using `uv`, you can do this with:
 
 ```bash
 uv version --bump major|minor|patch
