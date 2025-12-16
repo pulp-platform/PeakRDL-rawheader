@@ -9,7 +9,7 @@ build-backend = "uv_build"
 
 [project]
 name = "peakrdl-rawheader"
-version = "0.2.0"
+version = "0.2.1"
 requires-python = ">=3.10"
 readme = "README.md"
 description = "Generate Header files from a SystemRDL register model"
