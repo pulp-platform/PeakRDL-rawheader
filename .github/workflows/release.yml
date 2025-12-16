@@ -29,12 +29,12 @@ jobs:
         run: uv build
       - name: Smoke tests
         run: |
-          uv run --isolated --no-project --with dist/*.whl peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
-          uv run --isolated --no-project --with dist/*.whl peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
-          uv run --isolated --no-project --with dist/*.whl peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
-          uv run --isolated --no-project --with dist/*.tar.gz peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
-          uv run --isolated --no-project --with dist/*.tar.gz peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
-          uv run --isolated --no-project --with dist/*.tar.gz peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.whl peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.whl peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.whl peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.tar.gz peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.tar.gz peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.tar.gz peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
       - name: Publish
         run: uv publish
 
@@ -54,11 +54,11 @@ jobs:
         run: uv build
       - name: Smoke tests
         run: |
-          uv run --isolated --no-project --with dist/*.whl peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
-          uv run --isolated --no-project --with dist/*.whl peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
-          uv run --isolated --no-project --with dist/*.whl peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
-          uv run --isolated --no-project --with dist/*.tar.gz peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
-          uv run --isolated --no-project --with dist/*.tar.gz peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
-          uv run --isolated --no-project --with dist/*.tar.gz peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.whl peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.whl peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.whl peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.tar.gz peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.tar.gz peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
+          uv run --isolated --no-project --with peakrdl-cli --with dist/*.tar.gz peakrdl raw-header --format c tests/picobello.rdl -o addrmap.h
       - name: Publish
         run: uv publish --index testpypi
