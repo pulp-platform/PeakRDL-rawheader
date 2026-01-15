@@ -26,6 +26,64 @@ Or add it as a dependency in your `pyproject.toml` or `requirements.txt` e.g. wi
 uv add peakrdl-rawheader
 ```
 
+## Usage
+
+### Example
+
+Given the following SystemRDL input:
+
+```systemrdl
+addrmap top {
+    enum state {
+        IDLE = 0;
+        BUSY = 1;
+    };
+
+    reg status_reg {
+        field {
+            encode = state;
+        } fld;
+    };
+
+    status_reg status[2];
+};
+```
+
+The generated output will look like this:
+
+#### C Header (`c`)
+
+```c
+#define TOP_STATUS_BASE_ADDR(status_idx) (0x00000000 + (status_idx * 0x00000004))
+#define TOP_STATUS_NUM 0x00000002
+// ...
+#define state__IDLE 0
+#define state__BUSY 1
+```
+
+#### SystemVerilog Header (`svh`)
+
+```systemverilog
+`define TOP_STATUS_BASE_ADDR(status_idx) (64'h0 + (status_idx * 64'h4))
+`define TOP_STATUS_NUM 64'h2
+// ...
+`define STATE__IDLE 0
+`define STATE__BUSY 1
+```
+
+#### SystemVerilog Package (`svpkg`)
+
+```systemverilog
+function automatic longint unsigned TOP_STATUS_BASE_ADDR(input int unsigned status_idx);
+    return 64'h0 + (status_idx * 64'h4);
+endfunction
+// ...
+typedef enum logic [0:0] {
+    IDLE = 1'd0,
+    BUSY = 1'd1
+} state_e;
+```
+
 ## Publishing to PyPI
 
 To create a new release on PyPI, follow the following steps:
