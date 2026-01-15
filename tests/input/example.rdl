@@ -1,0 +1,14 @@
+addrmap top {
+    enum state {
+        IDLE = 0;
+        BUSY = 1;
+    };
+
+    reg status_reg {
+        field {
+            encode = state;
+        } fld;
+    };
+
+    status_reg status[2];
+};
