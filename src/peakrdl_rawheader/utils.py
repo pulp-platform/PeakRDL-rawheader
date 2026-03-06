@@ -10,7 +10,7 @@ from typing import Dict, List
 def fmt_hex(value: int, format: str = "svh"):
     """Format an integer as hexadecimal string for C or SystemVerilog headers."""
     match format:
-        case "c":
+        case "c" | "ldh":
             return f"0x{value:08X}"
         case "svh" | "svpkg":
             return f"64'h{value:X}"

@@ -31,7 +31,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         )
         arg_group.add_argument(
             "--format", default="c",
-            choices=["c", "svh", "svpkg"]
+            choices=["c", "svh", "svpkg", "ldh"]
         )
         arg_group.add_argument(
             "--license_str", default=None,
