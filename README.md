@@ -9,6 +9,7 @@ Currently supported formats:
 |`c`|Simple C header file|
 |`svh`|Simple SystemVerilog header file|
 |`svpkg`|Simple SystemVerilog package|
+|`ldh`|Linker script header (`PROVIDE` symbols)|
 
 Custom templates are also supported.
 
@@ -82,6 +83,16 @@ typedef enum logic [0:0] {
     IDLE = 1'd0,
     BUSY = 1'd1
 } state_e;
+```
+
+#### Linker Header (`ldh`)
+
+```ld
+/* Registers */
+PROVIDE(__top_status_0_base_addr__ = 0x00000000);
+PROVIDE(__top_status_1_base_addr__ = 0x00000004);
+PROVIDE(__top_status_num__ = 0x00000002);
+PROVIDE(__top_status_stride__ = 0x00000004);
 ```
 
 ## Publishing to PyPI
