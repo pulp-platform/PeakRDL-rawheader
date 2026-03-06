@@ -9,7 +9,7 @@ Currently supported formats:
 |`c`|Simple C header file|
 |`svh`|Simple SystemVerilog header file|
 |`svpkg`|Simple SystemVerilog package|
-|`ldh`|Linker script header (`PROVIDE` symbols)|
+|`ldh`|Linker script header (`MEMORY` + `PROVIDE` symbols)|
 
 Custom templates are also supported.
 
@@ -88,11 +88,36 @@ typedef enum logic [0:0] {
 #### Linker Header (`ldh`)
 
 ```ld
+/* Memories */
+MEMORY {
+  top_array_0 (rw) : ORIGIN = 0x70000000, LENGTH = 0x00100000
+  top_imem (rx) : ORIGIN = 0x00000000, LENGTH = 0x00001000
+}
+
 /* Registers */
 PROVIDE(__top_status_0_base_addr__ = 0x00000000);
 PROVIDE(__top_status_1_base_addr__ = 0x00000004);
 PROVIDE(__top_status_num__ = 0x00000002);
 PROVIDE(__top_status_stride__ = 0x00000004);
+```
+
+`ldh` supports selectively disabling either section:
+
+- `--ldh-no-memory`: skip `MEMORY { ... }` region emission
+- `--ldh-no-symbols`: skip `PROVIDE(...)` symbol emission
+
+`MEMORY` attributes are derived from memory properties:
+
+- `sw` controls `r`/`w`
+- user-defined boolean `executable` controls `x`
+
+Example UDP declaration in SystemRDL:
+
+```systemrdl
+property executable {
+  component = mem;
+  type = boolean;
+};
 ```
 
 ## Publishing to PyPI
