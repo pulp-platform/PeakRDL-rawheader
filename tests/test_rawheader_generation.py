@@ -22,3 +22,7 @@ def test_example_svh():
 def test_example_svpkg():
     generated = generate_header(INPUT_DIR / "example.rdl", "svpkg")
     check_header(generated, OUTPUT_DIR / "example.sv")
+
+def test_example_ldh():
+    generated = generate_header(INPUT_DIR / "example.rdl", "ldh")
+    check_header(generated, OUTPUT_DIR / "example.ldh")
