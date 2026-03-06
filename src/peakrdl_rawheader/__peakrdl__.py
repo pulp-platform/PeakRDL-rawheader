@@ -37,6 +37,14 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             "--license_str", default=None,
             help="License string to include in the header file"
         )
+        arg_group.add_argument(
+            "--ldh-no-memory", action="store_true",
+            help="When --format=ldh, do not emit linker MEMORY regions"
+        )
+        arg_group.add_argument(
+            "--ldh-no-symbols", action="store_true",
+            help="When --format=ldh, do not emit PROVIDE() symbols"
+        )
 
     @staticmethod
     def format(top_node: AddrmapNode, options):
@@ -57,14 +65,19 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             tmpl = Template(tf.read())
 
         # Gather data for the template
-        blocks, registers = get_layout(top_node)
+        blocks, registers, memories = get_layout(top_node)
         enums = get_enums(top_node)
+        emit_ldh_memory = not getattr(options, "ldh_no_memory", False)
+        emit_ldh_symbols = not getattr(options, "ldh_no_symbols", False)
 
         # Render and write
         rendered = tmpl.render(
             top_name=top_name,
             blocks=blocks,
             registers=registers,
+            memories=memories,
+            emit_ldh_memory=emit_ldh_memory,
+            emit_ldh_symbols=emit_ldh_symbols,
             license_str=license_str,
             enums=enums
         )

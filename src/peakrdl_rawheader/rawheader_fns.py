@@ -10,17 +10,19 @@
 from typing import Dict, List, Tuple
 
 from systemrdl.node import AddrmapNode, FieldNode, MemNode, RegNode, RegfileNode
+from systemrdl.rdltypes import AccessType
 
 
-def get_layout(top_node: AddrmapNode) -> Tuple[List[Dict[str, int]], List[Dict[str, object]]]:
-    """Return the hierarchical layout (blocks + register metadata)."""
-    blocks: List[Dict[str, int]] = []
+def get_layout(top_node: AddrmapNode) -> Tuple[List[Dict[str, object]], List[Dict[str, object]], List[Dict[str, object]]]:
+    """Return hierarchical layout (blocks, registers, and memories)."""
+    blocks: List[Dict[str, object]] = []
     registers: List[Dict[str, object]] = []
-    _collect_node(top_node, [], [], blocks, registers)
-    return blocks, registers
+    memories: List[Dict[str, object]] = []
+    _collect_node(top_node, [], [], blocks, registers, memories)
+    return blocks, registers, memories
 
 
-def _collect_node(node, name: List[str], array_info: List[Dict[str, int]], blocks, registers):
+def _collect_node(node, name: List[str], array_info: List[Dict[str, int]], blocks, registers, memories):
 
     match node:
         case FieldNode():
@@ -47,12 +49,16 @@ def _collect_node(node, name: List[str], array_info: List[Dict[str, int]], block
                 block["stride"] = node.array_stride
                 block["total_size"] = node.total_size
             blocks.append(block)
+            if isinstance(node, MemNode):
+                memory = dict(block)
+                memory["ld_attrs"] = _build_memory_ld_attrs(node)
+                memories.append(memory)
 
     match node:
         case AddrmapNode() | RegfileNode():
             # `addrmap` and `regfile` can have children, which are handled recursively
             for child in node.children():
-                _collect_node(child, name + [node.inst_name], array_info + _build_array_info(node), blocks, registers)
+                _collect_node(child, name + [node.inst_name], array_info + _build_array_info(node), blocks, registers, memories)
 
 
 def _build_array_info(node):
@@ -65,6 +71,25 @@ def _build_array_info(node):
         "dim": node.array_dimensions,
         "stride": node.array_stride,
     }]
+
+
+def _build_memory_ld_attrs(node: MemNode) -> str:
+    """Build GNU ld memory-region attribute string from memory access properties."""
+    attrs = []
+
+    sw = node.get_property("sw")
+    if sw in (AccessType.r, AccessType.rw, AccessType.rw1):
+        attrs.append("r")
+    if sw in (AccessType.w, AccessType.rw, AccessType.w1, AccessType.rw1):
+        attrs.append("w")
+
+    try:
+        if node.get_property("executable"):
+            attrs.append("x")
+    except LookupError:
+        pass
+
+    return "".join(attrs)
 
 
 def get_enums(top_node: AddrmapNode):
