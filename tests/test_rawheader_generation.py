@@ -11,6 +11,21 @@ def test_array_c():
     generated = generate_header(INPUT_DIR / "array.rdl", "c")
     check_header(generated, OUTPUT_DIR / "array.h")
 
+
+def test_array_ldh():
+    generated = generate_header(INPUT_DIR / "array.rdl", "ldh")
+    check_header(generated, OUTPUT_DIR / "array.ldh")
+
+
+def test_array_ldh_no_memory():
+    generated = generate_header(INPUT_DIR / "array.rdl", "ldh", ldh_no_memory=True)
+    check_header(generated, OUTPUT_DIR / "array.no_memory.ldh")
+
+
+def test_array_ldh_no_symbols():
+    generated = generate_header(INPUT_DIR / "array.rdl", "ldh", ldh_no_symbols=True)
+    check_header(generated, OUTPUT_DIR / "array.no_symbols.ldh")
+
 def test_example_c():
     generated = generate_header(INPUT_DIR / "example.rdl", "c")
     check_header(generated, OUTPUT_DIR / "example.h")
@@ -26,3 +41,8 @@ def test_example_svpkg():
 def test_example_ldh():
     generated = generate_header(INPUT_DIR / "example.rdl", "ldh")
     check_header(generated, OUTPUT_DIR / "example.ldh")
+
+
+def test_memory_attrs_ldh():
+    generated = generate_header(INPUT_DIR / "memory_attrs.rdl", "ldh")
+    check_header(generated, OUTPUT_DIR / "memory_attrs.ldh")
