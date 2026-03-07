@@ -1,4 +1,3 @@
-
 #ifndef TOP_H
 #define TOP_H
 
@@ -10,8 +9,5 @@
 #define TOP_ARRAY_SIZE 0x00100000
 #define TOP_ARRAY_STRIDE 0x00100000
 #define TOP_ARRAY_TOTAL_SIZE 0x00800000
-
-
-
 
 #endif /* TOP_H */

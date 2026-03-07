@@ -1,10 +1,9 @@
 <%!
     from peakrdl_rawheader.utils import fmt_hex, fmt_addr_expr, fmt_idx_expr, fmt_license, clog2
-%>
+%>\
 % if license_str is not None:
 ${fmt_license(license_str)}
 % endif
-
 package ${top_name + "_addrmap_pkg"};
 
 % for block in blocks:
@@ -25,7 +24,6 @@ localparam longint unsigned ${"_".join(block["name"] + ["total_size"]).upper()} 
 % endif
 
 % endfor
-
 % for reg in registers:
 % if not reg["array_info"]:
 localparam longint unsigned ${"_".join(reg["name"] + ["base_addr"]).upper()} = ${fmt_hex(reg["addr"], "svpkg")};
@@ -45,6 +43,5 @@ typedef enum logic [${enum_width-1}:0] {
 % endfor
 } ${enum["name"]}_e;
 % endfor
-
 
 endpackage;
