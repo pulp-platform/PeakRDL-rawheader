@@ -31,9 +31,13 @@ def fmt_addr_expr(base: int, array_info: List[Dict[str, int]], format: str = "sv
         terms.append(f"({a['idx_name']}_idx * {stride_str})")
     return " + ".join(terms)
 
-def fmt_license(license_str: str):
+def fmt_license(license_str: str, format: str = "svh"):
     """Format license string for inclusion in header files."""
-    return "\n".join(["// " + line for line in license_str.strip().splitlines()])
+    match format:
+        case "ldh":
+            return "\n".join(["/* " + line + " */" for line in license_str.strip().splitlines()])
+        case _:
+            return "\n".join(["// " + line for line in license_str.strip().splitlines()])
 
 def clog2(x: int) -> int:
     """Compute the ceiling of log2(x)."""
