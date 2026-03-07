@@ -45,6 +45,10 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             "--ldh-no-symbols", action="store_true",
             help="When --format=ldh, do not emit PROVIDE() symbols"
         )
+        arg_group.add_argument(
+            "--no-prefix", action="store_true",
+            help="Omit the top-level addrmap name from generated symbol names"
+        )
 
     @staticmethod
     def format(top_node: AddrmapNode, options):
@@ -69,6 +73,10 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         enums = get_enums(top_node)
         emit_ldh_memory = not getattr(options, "ldh_no_memory", False)
         emit_ldh_symbols = not getattr(options, "ldh_no_symbols", False)
+
+        if getattr(options, "no_prefix", False):
+            for item in blocks + registers + memories:
+                item["name"] = item["name"][1:]
 
         # Render and write
         rendered = tmpl.render(

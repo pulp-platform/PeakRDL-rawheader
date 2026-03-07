@@ -46,3 +46,8 @@ def test_example_ldh():
 def test_memory_attrs_ldh():
     generated = generate_header(INPUT_DIR / "memory_attrs.rdl", "ldh")
     check_header(generated, OUTPUT_DIR / "memory_attrs.ldh")
+
+
+def test_example_ldh_no_prefix():
+    generated = generate_header(INPUT_DIR / "example.rdl", "ldh", no_prefix=True)
+    check_header(generated, OUTPUT_DIR / "example.no_prefix.ldh")
