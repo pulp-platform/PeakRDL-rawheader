@@ -5,16 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-3-10
+
+### Changed
+
+- Added generation disclaimer comment in comment headers.
+
 ## [0.2.3] - 2026-3-10
 
 ### Added
 
 - New `--ldh` format to generate header files for linker scripts.
 - `--no-prefix` flag to cut top-level name from generated identifiers.
-
-### Changed
-
-- Renamed `--license_str` to `--license-str` and `--base_name` to `--base-name` for consistency with common command-line argument naming conventions. Previous flags are still supported for backward compatibility, but hidden from help output.
 
 ### Fixed
 
