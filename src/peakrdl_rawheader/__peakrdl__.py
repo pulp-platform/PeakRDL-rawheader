@@ -5,6 +5,7 @@
 #
 # Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
+import argparse
 from importlib.resources import files
 
 from mako.template import Template
@@ -26,16 +27,28 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             help="Path to the Mako template file (defaults to templates in plugin dir)"
         )
         arg_group.add_argument(
-            "--base_name", default=None,
+            "--base-name", default=None,
             help="Custom prefix for the header (defaults to top-level map name)"
+        )
+        # INFO(fischeti): To be deprecated in favor of `--base-name`,
+        # but keep the old option for backward compatibility for now
+        arg_group.add_argument(
+            "--base_name", dest="base_name", default=None,
+            help=argparse.SUPPRESS
         )
         arg_group.add_argument(
             "--format", default="c",
             choices=["c", "svh", "svpkg", "ldh"]
         )
         arg_group.add_argument(
-            "--license_str", default=None,
+            "--license-str", default=None,
             help="License string to include in the header file"
+        )
+        # INFO(fischeti): To be deprecated in favor of `--license-str`,
+        # but keep the old option for backward compatibility for now
+        arg_group.add_argument(
+            "--license_str", dest="license_str", default=None,
+            help=argparse.SUPPRESS
         )
         arg_group.add_argument(
             "--ldh-no-memory", action="store_true",
