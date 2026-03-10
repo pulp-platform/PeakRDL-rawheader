@@ -13,13 +13,18 @@ INPUT_DIR = Path(__file__).parent / "input"
 OUTPUT_DIR = Path(__file__).parent / "output"
 
 
-def default_options(format):
-    return Namespace(**{
+def default_options(format, **overrides):
+    options = {
         "template": None,
         "base_name": None,
         "format": format,
-        "license_str": None
-    })
+        "license_str": None,
+        "ldh_no_memory": False,
+        "ldh_no_symbols": False,
+        "no_prefix": False,
+    }
+    options.update(overrides)
+    return Namespace(**options)
 
 
 def parse(file):
@@ -28,8 +33,8 @@ def parse(file):
     return rdlc.elaborate().top
 
 
-def generate_header(file, format):
-    return HeaderGeneratorDescriptor().format(parse(file), default_options(format))
+def generate_header(file, format, **overrides):
+    return HeaderGeneratorDescriptor().format(parse(file), default_options(format, **overrides))
 
 
 def check_header(generated, expected):

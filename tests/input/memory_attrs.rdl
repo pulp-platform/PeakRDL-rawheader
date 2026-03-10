@@ -1,0 +1,39 @@
+property executable {
+  component = mem;
+  type = boolean;
+};
+
+addrmap top {
+  external mem {
+    mementries = 0x400;
+    memwidth = 32;
+    sw = r;
+    executable = true;
+  } imem @0x00000000;
+
+  external mem {
+    mementries = 0x800;
+    memwidth = 32;
+    sw = rw;
+  } dmem @0x00100000;
+
+  external mem {
+    mementries = 0x200;
+    memwidth = 32;
+    sw = w;
+  } womem @0x00200000;
+
+  external mem {
+    mementries = 0x200;
+    memwidth = 32;
+    sw = na;
+    executable = true;
+  } xonly @0x00300000;
+
+  external mem {
+    mementries = 0x200;
+    memwidth = 32;
+    sw = rw;
+    executable = true;
+  } rxmem @0x00400000;
+};

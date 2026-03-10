@@ -31,11 +31,23 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         )
         arg_group.add_argument(
             "--format", default="c",
-            choices=["c", "svh", "svpkg"]
+            choices=["c", "svh", "svpkg", "ldh"]
         )
         arg_group.add_argument(
             "--license_str", default=None,
             help="License string to include in the header file"
+        )
+        arg_group.add_argument(
+            "--ldh-no-memory", action="store_true",
+            help="When --format=ldh, do not emit linker MEMORY regions"
+        )
+        arg_group.add_argument(
+            "--ldh-no-symbols", action="store_true",
+            help="When --format=ldh, do not emit PROVIDE() symbols"
+        )
+        arg_group.add_argument(
+            "--no-prefix", action="store_true",
+            help="Omit the top-level addrmap name from generated symbol names"
         )
 
     @staticmethod
@@ -57,14 +69,23 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             tmpl = Template(tf.read())
 
         # Gather data for the template
-        blocks, registers = get_layout(top_node)
+        blocks, registers, memories = get_layout(top_node)
         enums = get_enums(top_node)
+        emit_ldh_memory = not getattr(options, "ldh_no_memory", False)
+        emit_ldh_symbols = not getattr(options, "ldh_no_symbols", False)
+
+        if getattr(options, "no_prefix", False):
+            for item in blocks + registers + memories:
+                item["name"] = item["name"][1:]
 
         # Render and write
         rendered = tmpl.render(
             top_name=top_name,
             blocks=blocks,
             registers=registers,
+            memories=memories,
+            emit_ldh_memory=emit_ldh_memory,
+            emit_ldh_symbols=emit_ldh_symbols,
             license_str=license_str,
             enums=enums
         )

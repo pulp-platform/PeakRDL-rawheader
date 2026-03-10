@@ -1,10 +1,9 @@
 <%!
     from peakrdl_rawheader.utils import fmt_hex, fmt_addr_expr, fmt_idx_expr, fmt_license, clog2
-%>
+%>\
 % if license_str is not None:
 ${fmt_license(license_str)}
 % endif
-
 `ifndef ${top_name.upper() + "_SVH"}
 `define ${top_name.upper() + "_SVH"}
 
@@ -24,7 +23,6 @@ ${fmt_license(license_str)}
 % endif
 
 % endfor
-
 % for reg in registers:
 % if not reg["array_info"]:
 `define ${"_".join(reg["name"] + ["base_addr"]).upper()} ${fmt_hex(reg["addr"], "svh")}
@@ -34,12 +32,10 @@ ${fmt_license(license_str)}
 % endif
 
 % endfor
-
 % for enum in enums:
 % for field in enum["choices"]:
 `define ${enum["name"].upper()}__${field["name"]} ${field["value"]}
 % endfor
 
 % endfor
-
 `endif /* ${top_name.upper() + "_SVH"} */
