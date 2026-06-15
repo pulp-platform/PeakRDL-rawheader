@@ -28,7 +28,8 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         )
         arg_group.add_argument(
             "--base-name", default=None,
-            help="Custom prefix for the header (defaults to top-level map name)"
+            help="Custom prefix for generated symbols and include guard "
+                 "(defaults to top-level map name; mutually exclusive with --no-prefix)"
         )
         # INFO(fischeti): To be deprecated in favor of `--base-name`,
         # but keep the old option for backward compatibility for now
@@ -60,11 +61,16 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         )
         arg_group.add_argument(
             "--no-prefix", action="store_true",
-            help="Omit the top-level addrmap name from generated symbol names"
+            help="Omit the top-level addrmap name from generated symbol names "
+                 "(mutually exclusive with --base-name)"
         )
 
     @staticmethod
     def format(top_node: AddrmapNode, options):
+        no_prefix = getattr(options, "no_prefix", False)
+        if options.base_name and no_prefix:
+            raise ValueError("--base-name and --no-prefix are mutually exclusive")
+
         top_name = (options.base_name or top_node.inst_name)
 
         license_str = None
@@ -87,7 +93,11 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         emit_ldh_memory = not getattr(options, "ldh_no_memory", False)
         emit_ldh_symbols = not getattr(options, "ldh_no_symbols", False)
 
-        if getattr(options, "no_prefix", False):
+        if options.base_name:
+            # Replace the top-level addrmap name with the custom prefix
+            for item in blocks + registers + memories:
+                item["name"][0] = options.base_name
+        elif no_prefix:
             for item in blocks + registers + memories:
                 item["name"] = item["name"][1:]
 
