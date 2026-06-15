@@ -4,6 +4,8 @@
 #
 # Author: Luca Colagrande <colluca@iis.ee.ethz.ch>
 
+import pytest
+
 from conftest import INPUT_DIR, OUTPUT_DIR, check_header, generate_header
 
 
@@ -51,3 +53,28 @@ def test_memory_attrs_ldh():
 def test_example_ldh_no_prefix():
     generated = generate_header(INPUT_DIR / "example.rdl", "ldh", no_prefix=True)
     check_header(generated, OUTPUT_DIR / "example.no_prefix.ldh")
+
+
+def test_example_c_base_name():
+    generated = generate_header(INPUT_DIR / "example.rdl", "c", base_name="custom")
+    check_header(generated, OUTPUT_DIR / "example.base_name.h")
+
+
+def test_example_svh_base_name():
+    generated = generate_header(INPUT_DIR / "example.rdl", "svh", base_name="custom")
+    check_header(generated, OUTPUT_DIR / "example.base_name.svh")
+
+
+def test_example_svpkg_base_name():
+    generated = generate_header(INPUT_DIR / "example.rdl", "svpkg", base_name="custom")
+    check_header(generated, OUTPUT_DIR / "example.base_name.sv")
+
+
+def test_example_ldh_base_name():
+    generated = generate_header(INPUT_DIR / "example.rdl", "ldh", base_name="custom")
+    check_header(generated, OUTPUT_DIR / "example.base_name.ldh")
+
+
+def test_base_name_and_no_prefix_mutually_exclusive():
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        generate_header(INPUT_DIR / "example.rdl", "c", base_name="custom", no_prefix=True)
