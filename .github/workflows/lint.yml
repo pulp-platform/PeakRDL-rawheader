@@ -1,6 +1,6 @@
-# Copyright 2023 ETH Zurich and University of Bologna.
-# Solderpad Hardware License, Version 0.51, see LICENSE for details.
-# SPDX-License-Identifier: SHL-0.51
+# Copyright 2025 ETH Zurich and University of Bologna.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
 
 # Author: Tim Fischer <fischeti@iis.ee.ethz.ch>
 
@@ -24,19 +24,11 @@ jobs:
       - uses: astral-sh/ruff-action@v3
 
   #################
-  # Check License #
+  # REUSE        #
   #################
-  lint-license:
+  reuse:
     runs-on: ubuntu-latest
     steps:
-      - name: lint license
-        uses: pulp-platform/pulp-actions/lint-license@v2
-        with:
-          license: |
-            Copyright (\d{4}(-\d{4})?\s)?(ETH Zurich and University of Bologna|lowRISC contributors).
-            (Solderpad Hardware License, Version 0.51|Licensed under the Apache License, Version 2.0), see LICENSE for details.
-            SPDX-License-Identifier: (SHL-0.51|Apache-2.0)
-          exclude_paths: |
-            src/peakrdl_rawheader/templates/*.mako
-            tests/input/*
-            tests/output/*
+      - uses: actions/checkout@v6
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v6
