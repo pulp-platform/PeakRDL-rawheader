@@ -40,9 +40,16 @@ classifiers = [
 cli = [
     "peakrdl-cli >= 1.2.3",
 ]
+
+[dependency-groups]
 test = [
     "peakrdl",
     "pytest",
+]
+docs = [
+    "sphinx",
+    "sphinx-book-theme",
+    "pygments-systemrdl",
 ]
 
 [project.entry-points."peakrdl.exporters"]
