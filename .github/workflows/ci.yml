@@ -17,7 +17,7 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
       - name: Run Python unit tests
@@ -27,7 +27,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
       - name: Build documentation
@@ -37,14 +37,14 @@ jobs:
   svpkg:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
       - name: Generate package
         run: |
           uv run --extra cli peakrdl raw-header --format svpkg tests/picobello.rdl -o addrmap.sv
       - name: Setup Verilator
-        uses: veryl-lang/setup-verilator@v1
+        uses: veryl-lang/setup-verilator@v2
       - name: Lint SystemVerilog Package
         run: |
           verilator --lint-only addrmap.sv
@@ -52,14 +52,14 @@ jobs:
   svh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
       - name: Generate package
         run: |
           uv run --extra cli peakrdl raw-header --format svh tests/picobello.rdl -o addrmap.svh
       - name: Setup Verilator
-        uses: veryl-lang/setup-verilator@v1
+        uses: veryl-lang/setup-verilator@v2
       - name: Lint SystemVerilog Package
         run: |
           verilator --lint-only tests/svh_pkg.sv -Itests
@@ -67,7 +67,7 @@ jobs:
   c:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install uv
         uses: astral-sh/setup-uv@v8.2.0
       - name: Generate package
