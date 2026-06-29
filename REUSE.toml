@@ -14,6 +14,7 @@ path = [
     "CLAUDE.md",
     ".gitignore",
     ".python-version",
+    "docs/**",
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2025 ETH Zurich and University of Bologna"
