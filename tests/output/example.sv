@@ -16,4 +16,4 @@ typedef enum logic [0:0] {
     BUSY = 1'd1
 } state_e;
 
-endpackage;
+endpackage

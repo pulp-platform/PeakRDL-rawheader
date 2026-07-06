@@ -46,4 +46,4 @@ typedef enum logic [${enum_width-1}:0] {
 } ${enum["name"]}_e;
 % endfor
 
-endpackage;
+endpackage
