@@ -51,6 +51,9 @@ docs = [
     "sphinx-book-theme",
     "pygments-systemrdl",
 ]
+dev = [
+    "ruff>=0.16.1",
+]
 
 [project.entry-points."peakrdl.exporters"]
 raw-header = "peakrdl_rawheader.__peakrdl__:HeaderGeneratorDescriptor"
