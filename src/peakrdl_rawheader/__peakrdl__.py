@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # Copyright 2025 ETH Zurich and University of Bologna.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
@@ -14,8 +13,11 @@ from systemrdl.node import AddrmapNode
 
 from peakrdl_rawheader.rawheader_fns import get_enums, get_layout
 
+
 class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
-    short_desc = "Generate C header with block base addresses and register offsets via Mako"
+    short_desc = (
+        "Generate C header with block base addresses and register offsets via Mako"
+    )
     long_desc = (
         "Walk the RDL tree and render a C header file from a Mako template, "
         "indicating base addresses for each addrmap block and offsets for each register."
@@ -23,46 +25,49 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
 
     def add_exporter_arguments(self, arg_group):
         arg_group.add_argument(
-            "--template", default=None,
-            help="Path to the Mako template file (defaults to templates in plugin dir)"
+            "--template",
+            default=None,
+            help="Path to the Mako template file (defaults to templates in plugin dir)",
         )
         arg_group.add_argument(
-            "--base-name", default=None,
+            "--base-name",
+            default=None,
             help="Custom prefix for generated symbols and include guard "
-                 "(defaults to top-level map name; mutually exclusive with --no-prefix)"
+            "(defaults to top-level map name; mutually exclusive with --no-prefix)",
         )
         # INFO(fischeti): To be deprecated in favor of `--base-name`,
         # but keep the old option for backward compatibility for now
         arg_group.add_argument(
-            "--base_name", dest="base_name", default=None,
-            help=argparse.SUPPRESS
+            "--base_name", dest="base_name", default=None, help=argparse.SUPPRESS
         )
         arg_group.add_argument(
-            "--format", default="c",
-            choices=["c", "svh", "svpkg", "ldh"]
+            "--format", default="c", choices=["c", "svh", "svpkg", "ldh"]
         )
         arg_group.add_argument(
-            "--license-str", default=None,
-            help="License string to include in the header file"
+            "--license-str",
+            default=None,
+            help="License string to include in the header file",
         )
         # INFO(fischeti): To be deprecated in favor of `--license-str`,
         # but keep the old option for backward compatibility for now
         arg_group.add_argument(
-            "--license_str", dest="license_str", default=None,
-            help=argparse.SUPPRESS
+            "--license_str", dest="license_str", default=None, help=argparse.SUPPRESS
         )
         arg_group.add_argument(
-            "--ldh-no-memory", action="store_true",
-            help="When --format=ldh, do not emit linker MEMORY regions"
+            "--ldh-no-memory",
+            action="store_true",
+            help="When --format=ldh, do not emit linker MEMORY regions",
         )
         arg_group.add_argument(
-            "--ldh-no-symbols", action="store_true",
-            help="When --format=ldh, do not emit PROVIDE() symbols"
+            "--ldh-no-symbols",
+            action="store_true",
+            help="When --format=ldh, do not emit PROVIDE() symbols",
         )
         arg_group.add_argument(
-            "--no-prefix", action="store_true",
+            "--no-prefix",
+            action="store_true",
             help="Omit the top-level addrmap name from generated symbol names "
-                 "(mutually exclusive with --base-name)"
+            "(mutually exclusive with --base-name)",
         )
 
     @staticmethod
@@ -71,18 +76,20 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         if options.base_name and no_prefix:
             raise ValueError("--base-name and --no-prefix are mutually exclusive")
 
-        top_name = (options.base_name or top_node.inst_name)
+        top_name = options.base_name or top_node.inst_name
 
         license_str = None
         if options.license_str:
             # Convert literal \n to actual newlines
-            license_str = options.license_str.replace('\\n', '\n')
+            license_str = options.license_str.replace("\\n", "\n")
 
         # Load template
         if options.template:
             template_path = options.template
         else:
-            template_path = files("peakrdl_rawheader") / "templates" / (options.format + ".mako")
+            template_path = (
+                files("peakrdl_rawheader") / "templates" / (options.format + ".mako")
+            )
 
         with open(template_path, "r") as tf:
             tmpl = Template(tf.read())
@@ -110,7 +117,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             emit_ldh_memory=emit_ldh_memory,
             emit_ldh_symbols=emit_ldh_symbols,
             license_str=license_str,
-            enums=enums
+            enums=enums,
         )
         return rendered
 
