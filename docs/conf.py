@@ -9,7 +9,7 @@ import datetime
 
 project = "PeakRDL-rawheader"
 author = "Michael Rogenmoser, Tim Fischer"
-copyright = f"{datetime.date.today().year}, ETH Zurich and University of Bologna"
+copyright = f"{datetime.datetime.now(tz=datetime.timezone.utc).date().year}, ETH Zurich and University of Bologna"
 
 exclude_patterns = ["_build"]
 

@@ -5,9 +5,11 @@
 # Author: Luca Colagrande <colluca@iis.ee.ethz.ch>
 
 from argparse import Namespace
-from systemrdl import RDLCompiler
-from peakrdl_rawheader.__peakrdl__ import HeaderGeneratorDescriptor
 from pathlib import Path
+
+from systemrdl import RDLCompiler
+
+from peakrdl_rawheader.__peakrdl__ import HeaderGeneratorDescriptor
 
 INPUT_DIR = Path(__file__).parent / "input"
 OUTPUT_DIR = Path(__file__).parent / "output"
@@ -34,7 +36,9 @@ def parse(file):
 
 
 def generate_header(file, format, **overrides):
-    return HeaderGeneratorDescriptor().format(parse(file), default_options(format, **overrides))
+    return HeaderGeneratorDescriptor().format(
+        parse(file), default_options(format, **overrides)
+    )
 
 
 def check_header(generated, expected):
