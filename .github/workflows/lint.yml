@@ -23,6 +23,17 @@ jobs:
       - uses: actions/checkout@v7
       - uses: astral-sh/ruff-action@v4.1.0
 
+  ###############
+  # Ruff format #
+  ###############
+  ruff-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/ruff-action@v4.1.0
+        with:
+          args: "format --check --diff"
+
   ######
   # ty #
   ######
