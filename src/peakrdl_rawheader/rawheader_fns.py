@@ -7,17 +7,19 @@
 # - Tim Fischer <fischeti@iis.ee.ethz.ch>
 
 
+from typing import Any
+
 from systemrdl.node import AddrmapNode, FieldNode, MemNode, RegfileNode, RegNode
 from systemrdl.rdltypes import AccessType
 
 
 def get_layout(
     top_node: AddrmapNode,
-) -> tuple[list[dict[str, object]], list[dict[str, object]], list[dict[str, object]]]:
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     """Return hierarchical layout (blocks, registers, and memories)."""
-    blocks: list[dict[str, object]] = []
-    registers: list[dict[str, object]] = []
-    memories: list[dict[str, object]] = []
+    blocks: list[dict[str, Any]] = []
+    registers: list[dict[str, Any]] = []
+    memories: list[dict[str, Any]] = []
     _collect_node(top_node, [], [], blocks, registers, memories)
     return blocks, registers, memories
 
@@ -111,9 +113,11 @@ def get_enums(top_node: AddrmapNode):
     # Collect unique enums
     seen_enum_keys = set()
     enums = []
-    for node in top_node.descendants(FieldNode):
-        if isinstance(node, FieldNode) and node.get_property("encode") is not None:
+    for node in top_node.descendants():
+        if isinstance(node, FieldNode):
             enum = node.get_property("encode")
+            if enum is None:
+                continue
 
             if enum.type_name in seen_enum_keys:
                 continue
