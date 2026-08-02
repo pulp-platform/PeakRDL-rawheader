@@ -52,6 +52,7 @@ docs = [
 ]
 dev = [
     "ruff>=0.16.1",
+    "ty>=0.0.65",
 ]
 
 [project.entry-points."peakrdl.exporters"]
