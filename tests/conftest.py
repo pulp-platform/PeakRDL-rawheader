@@ -23,6 +23,7 @@ def default_options(format, **overrides):
         "license_str": None,
         "ldh_no_memory": False,
         "ldh_no_symbols": False,
+        "ldh_no_registers": False,
         "no_prefix": False,
     }
     options.update(overrides)

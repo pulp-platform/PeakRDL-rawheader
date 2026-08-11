@@ -56,6 +56,15 @@ the output path), the following exporter-specific options are available.
     ``PROVIDE(...)`` symbols.
 
 
+.. option:: --ldh-no-registers
+
+    Only meaningful with ``--format ldh``. Suppresses emission of the
+    ``PROVIDE(...)`` symbols for registers, keeping those for blocks. Useful
+    for register maps with large register arrays, where the per-element
+    symbols dominate the output but linker scripts only reference block base
+    addresses.
+
+
 .. note::
 
     The deprecated aliases ``--base_name`` and ``--license_str`` (with

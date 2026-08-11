@@ -116,6 +116,8 @@ Either section can be disabled selectively:
 
 * :option:`--ldh-no-memory`: skip ``MEMORY { ... }`` region emission
 * :option:`--ldh-no-symbols`: skip ``PROVIDE(...)`` symbol emission
+* :option:`--ldh-no-registers`: skip the register ``PROVIDE(...)`` symbols only,
+  keeping the block ones
 
 The attributes of each ``MEMORY`` region are derived from the memory's
 SystemRDL properties:
