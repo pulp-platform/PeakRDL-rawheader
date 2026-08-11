@@ -24,6 +24,7 @@ def default_options(format, **overrides):
         "ldh_no_memory": False,
         "ldh_no_symbols": False,
         "ldh_no_registers": False,
+        "params": False,
         "no_prefix": False,
     }
     options.update(overrides)

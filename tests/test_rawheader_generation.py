@@ -83,6 +83,33 @@ def test_example_ldh_base_name():
     check_header(generated, OUTPUT_DIR / "example.base_name.ldh")
 
 
+def test_params_c():
+    generated = generate_header(INPUT_DIR / "params.rdl", "c", params=True)
+    check_header(generated, OUTPUT_DIR / "params.h")
+
+
+def test_params_svh():
+    generated = generate_header(INPUT_DIR / "params.rdl", "svh", params=True)
+    check_header(generated, OUTPUT_DIR / "params.svh")
+
+
+def test_params_svpkg():
+    generated = generate_header(INPUT_DIR / "params.rdl", "svpkg", params=True)
+    check_header(generated, OUTPUT_DIR / "params.sv")
+
+
+def test_params_ignored_by_ldh():
+    """The `ldh` format has no use for parameters, so `--params` is a no-op."""
+    with_params = generate_header(INPUT_DIR / "params.rdl", "ldh", params=True)
+    without_params = generate_header(INPUT_DIR / "params.rdl", "ldh")
+    assert with_params == without_params
+
+
+def test_params_disabled_by_default():
+    generated = generate_header(INPUT_DIR / "params.rdl", "c")
+    check_header(generated, OUTPUT_DIR / "params.no_params.h")
+
+
 def test_base_name_and_no_prefix_mutually_exclusive():
     with pytest.raises(ValueError, match="mutually exclusive"):
         generate_header(

@@ -1,0 +1,28 @@
+addrmap cluster #(
+    longint unsigned NumCores = 4,
+    longint unsigned TcdmSize = 0x20000,
+    boolean          HasFpu   = true,
+    string           Flavor   = "fast",
+    longint unsigned Widths[] = '{32, 64}
+) {
+    reg ctrl_reg #(
+        longint unsigned ResetValue = 0
+    ) {
+        field {
+            sw = rw;
+            hw = r;
+        } fld[31:0];
+    };
+
+    ctrl_reg ctrl[NumCores];
+
+    mem {
+        mementries = TcdmSize / 4;
+        memwidth = 32;
+    } external tcdm;
+};
+
+addrmap top {
+    cluster c0;
+    cluster #(.NumCores(8), .TcdmSize(0x40000), .HasFpu(false)) c1 @ 0x100000;
+};
