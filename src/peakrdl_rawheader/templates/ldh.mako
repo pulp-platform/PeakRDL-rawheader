@@ -51,6 +51,7 @@ PROVIDE(${ld_sym(block["name"], None, "total_size")} = ${fmt_hex(block["total_si
 % endif
 
 % endfor
+% if emit_ldh_registers:
 /* Registers */
 % for reg in registers:
 % for idx, addr in iter_instances(reg["addr"], reg["array_info"]):
@@ -62,4 +63,5 @@ PROVIDE(${ld_sym(reg["name"], None, "stride")} = ${fmt_hex(reg["array_info"][-1]
 % endif
 
 % endfor
+% endif
 % endif

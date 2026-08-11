@@ -64,6 +64,12 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             help="When --format=ldh, do not emit PROVIDE() symbols",
         )
         arg_group.add_argument(
+            "--ldh-no-registers",
+            action="store_true",
+            help="When --format=ldh, do not emit PROVIDE() symbols for registers "
+            "(block and memory symbols are still emitted)",
+        )
+        arg_group.add_argument(
             "--no-prefix",
             action="store_true",
             help="Omit the top-level addrmap name from generated symbol names "
@@ -99,6 +105,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         enums = get_enums(top_node)
         emit_ldh_memory = not getattr(options, "ldh_no_memory", False)
         emit_ldh_symbols = not getattr(options, "ldh_no_symbols", False)
+        emit_ldh_registers = not getattr(options, "ldh_no_registers", False)
 
         if options.base_name:
             # Replace the top-level addrmap name with the custom prefix
@@ -116,6 +123,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             memories=memories,
             emit_ldh_memory=emit_ldh_memory,
             emit_ldh_symbols=emit_ldh_symbols,
+            emit_ldh_registers=emit_ldh_registers,
             license_str=license_str,
             enums=enums,
         )
