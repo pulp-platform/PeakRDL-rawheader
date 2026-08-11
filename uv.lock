@@ -517,7 +517,7 @@ test = [
 requires-dist = [
     { name = "mako", specifier = ">=1.2.4" },
     { name = "peakrdl-cli", marker = "extra == 'cli'", specifier = ">=1.2.3" },
-    { name = "systemrdl-compiler", specifier = ">=1.29.0,<2" },
+    { name = "systemrdl-compiler", specifier = ">=1.30.0,<2" },
 ]
 provides-extras = ["cli"]
 
