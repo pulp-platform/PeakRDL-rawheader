@@ -17,4 +17,4 @@ templates (``c.mako``, ``svh.mako``, ``svpkg.mako``, ``ldh.mako``) from the
 available in the template namespace — chiefly ``top_name``, ``blocks``,
 ``registers``, ``memories``, and ``enums`` — and the formatting helpers in
 ``peakrdl_rawheader.utils`` (``fmt_hex``, ``fmt_addr_expr``, ``fmt_idx_expr``,
-``fmt_license``).
+``fmt_license``, ``fmt_param_value``, ``fmt_param_type``).

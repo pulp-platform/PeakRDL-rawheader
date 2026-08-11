@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `--params` flag to emit the elaborated SystemRDL parameters of each block and register as `<path>_PARAM_<NAME>` symbols, in the `c`, `svh`, and `svpkg` formats. The flag is a no-op for `ldh`, since a linker script has no use for parameter values.
+
+### Changed
+
+- Minimum `systemrdl-compiler` version raised to 1.30.0, which introduced the `Node.parameters` API used by `--params`.
+
 ## [0.2.7] - 2026-8-11
 
 ### Added
