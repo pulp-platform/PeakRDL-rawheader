@@ -70,6 +70,12 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             "(block and memory symbols are still emitted)",
         )
         arg_group.add_argument(
+            "--params",
+            action="store_true",
+            help="Emit the elaborated SystemRDL parameters of each block and "
+            "register alongside the address symbols",
+        )
+        arg_group.add_argument(
             "--no-prefix",
             action="store_true",
             help="Omit the top-level addrmap name from generated symbol names "
@@ -106,6 +112,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         emit_ldh_memory = not getattr(options, "ldh_no_memory", False)
         emit_ldh_symbols = not getattr(options, "ldh_no_symbols", False)
         emit_ldh_registers = not getattr(options, "ldh_no_registers", False)
+        emit_params = getattr(options, "params", False)
 
         if options.base_name:
             # Replace the top-level addrmap name with the custom prefix
@@ -124,6 +131,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             emit_ldh_memory=emit_ldh_memory,
             emit_ldh_symbols=emit_ldh_symbols,
             emit_ldh_registers=emit_ldh_registers,
+            emit_params=emit_params,
             license_str=license_str,
             enums=enums,
         )

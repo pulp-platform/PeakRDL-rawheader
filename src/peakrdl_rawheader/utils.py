@@ -34,6 +34,39 @@ def fmt_addr_expr(base: int, array_info: list[dict[str, int]], format: str = "sv
     return " + ".join(terms)
 
 
+def fmt_param_value(value, format: str = "svh"):
+    """Format an elaborated parameter value as a literal.
+
+    Handles the scalar types that `_build_params` collects; the `ldh` format
+    does not emit parameters, so every value has a representation here.
+    """
+    match value:
+        # `bool` is a subclass of `int`, so it has to be matched first
+        case bool():
+            if format == "svpkg":
+                return "1'b1" if value else "1'b0"
+            return "1" if value else "0"
+        case int():
+            # Parameters are values rather than addresses, so decimal reads better
+            return str(value)
+        case str():
+            return f'"{value}"'
+    return None
+
+
+def fmt_param_type(value):
+    """Format the SystemVerilog type of a parameter value (for `svpkg`)."""
+    match value:
+        # `bool` is a subclass of `int`, so it has to be matched first
+        case bool():
+            return "bit"
+        case int():
+            return "longint unsigned" if value >= 0 else "longint"
+        case str():
+            return "string"
+    return None
+
+
 def fmt_license(license_str: str, format: str = "svh"):
     """Format license string for inclusion in header files."""
     match format:

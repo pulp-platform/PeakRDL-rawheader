@@ -1,5 +1,5 @@
 <%!
-    from peakrdl_rawheader.utils import fmt_hex, fmt_addr_expr, fmt_idx_expr, fmt_license
+    from peakrdl_rawheader.utils import fmt_hex, fmt_addr_expr, fmt_idx_expr, fmt_license, fmt_param_value
 %>\
 % if license_str is not None:
 ${fmt_license(license_str)}
@@ -23,6 +23,11 @@ ${fmt_license(license_str)}
 % if "total_size" in block:
 #define ${"_".join(block["name"] + ["total_size"]).upper()} ${fmt_hex(block["total_size"], "c")}
 % endif
+% if emit_params:
+% for param in block["params"]:
+#define ${"_".join(block["name"] + ["param", param["name"]]).upper()} ${fmt_param_value(param["value"], "c")}
+% endfor
+% endif
 
 % endfor
 % for reg in registers:
@@ -31,6 +36,11 @@ ${fmt_license(license_str)}
 % else:
 #define ${"_".join(reg["name"] + ["base_addr"]).upper()}(${fmt_idx_expr(reg["array_info"], "c")}) (${fmt_addr_expr(reg["addr"], reg["array_info"], "c")})
 #define ${"_".join(reg["name"] + ["num"]).upper()} ${fmt_hex(reg["array_info"][-1]["dim"][-1], "c")}
+% endif
+% if emit_params:
+% for param in reg["params"]:
+#define ${"_".join(reg["name"] + ["param", param["name"]]).upper()} ${fmt_param_value(param["value"], "c")}
+% endfor
 % endif
 
 % endfor

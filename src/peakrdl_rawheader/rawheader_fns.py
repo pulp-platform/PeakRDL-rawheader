@@ -40,6 +40,7 @@ def _collect_node(
                     "addr": node.raw_absolute_address,
                     "offset": node.raw_address_offset,
                     "array_info": array_info + _build_array_info(node),
+                    "params": _build_params(node),
                 }
             )
             return
@@ -50,6 +51,7 @@ def _collect_node(
                 "addr": node.raw_absolute_address,
                 "size": node.size,
                 "array_info": array_info + _build_array_info(node),
+                "params": _build_params(node),
             }
             if node.is_array:
                 block["stride"] = node.array_stride
@@ -85,6 +87,15 @@ def _build_array_info(node):
             "dim": node.array_dimensions,
             "stride": node.array_stride,
         }
+    ]
+
+
+def _build_params(node) -> list[dict[str, Any]]:
+    """Build the list of elaborated parameters of a node."""
+    return [
+        {"name": param_name, "value": value}
+        for param_name, value in node.parameters.items()
+        if isinstance(value, (bool, int, str))
     ]
 
 

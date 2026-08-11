@@ -1,5 +1,5 @@
 <%!
-    from peakrdl_rawheader.utils import fmt_hex, fmt_addr_expr, fmt_idx_expr, fmt_license, clog2
+    from peakrdl_rawheader.utils import fmt_hex, fmt_addr_expr, fmt_idx_expr, fmt_license, fmt_param_value, fmt_param_type, clog2
 %>\
 % if license_str is not None:
 ${fmt_license(license_str)}
@@ -24,6 +24,11 @@ localparam longint unsigned ${"_".join(block["name"] + ["stride"]).upper()} = ${
 % if "total_size" in block:
 localparam longint unsigned ${"_".join(block["name"] + ["total_size"]).upper()} = ${fmt_hex(block["total_size"], "svpkg")};
 % endif
+% if emit_params:
+% for param in block["params"]:
+localparam ${fmt_param_type(param["value"])} ${"_".join(block["name"] + ["param", param["name"]]).upper()} = ${fmt_param_value(param["value"], "svpkg")};
+% endfor
+% endif
 
 % endfor
 % for reg in registers:
@@ -34,6 +39,11 @@ function automatic longint unsigned ${"_".join(reg["name"] + ["base_addr"]).uppe
     return ${fmt_addr_expr(reg["addr"], reg["array_info"], "svpkg")};
 endfunction
 localparam longint unsigned ${"_".join(reg["name"] + ["num"]).upper()} = ${fmt_hex(reg["array_info"][-1]["dim"][-1], "svpkg")};
+% endif
+% if emit_params:
+% for param in reg["params"]:
+localparam ${fmt_param_type(param["value"])} ${"_".join(reg["name"] + ["param", param["name"]]).upper()} = ${fmt_param_value(param["value"], "svpkg")};
+% endfor
 % endif
 % endfor
 
