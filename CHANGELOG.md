@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- `svpkg` enums are now sized by the width of the field they encode (exposed to templates as `enum["width"]`), instead of `clog2` of the member count, which under-sized enums on wide fields and broke sparse encodings.
+
 ## [0.2.7] - 2026-8-11
 
 ### Added

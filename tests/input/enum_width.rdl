@@ -1,0 +1,18 @@
+addrmap top {
+    enum opcode {
+        NOP = 4'd0;
+        ADD = 4'd1;
+        SUB = 4'd2;
+        MUL = 4'd3;
+        DIV = 4'd4;
+        SQRT = 4'd5;
+    };
+
+    reg ctrl_reg {
+        field {
+            encode = opcode;
+        } op [7:4] = 0;
+    };
+
+    ctrl_reg ctrl;
+};
