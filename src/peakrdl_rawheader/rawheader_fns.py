@@ -110,18 +110,18 @@ def _build_memory_ld_attrs(node: MemNode) -> str:
 def get_enums(top_node: AddrmapNode):
     """Recursively get all enums in the addrmap tree."""
 
-    # Collect unique enums
-    seen_enum_keys = set()
-    enums = []
+    # Collect unique enums; width is the widest field the enum encodes
+    seen_enums: dict[str, dict[str, Any]] = {}
     for node in top_node.descendants():
         if isinstance(node, FieldNode):
             enum = node.get_property("encode")
             if enum is None:
                 continue
 
-            if enum.type_name in seen_enum_keys:
+            if enum.type_name in seen_enums:
+                seen = seen_enums[enum.type_name]
+                seen["width"] = max(seen["width"], node.width)
                 continue
-            seen_enum_keys.add(enum.type_name)
 
             choices = []
             for enum_member in enum:
@@ -133,6 +133,10 @@ def get_enums(top_node: AddrmapNode):
                     }
                 )
 
-            enums.append({"name": enum.type_name, "choices": choices})
+            seen_enums[enum.type_name] = {
+                "name": enum.type_name,
+                "width": node.width,
+                "choices": choices,
+            }
 
-    return enums
+    return list(seen_enums.values())

@@ -1,5 +1,5 @@
 <%!
-    from peakrdl_rawheader.utils import fmt_hex, fmt_addr_expr, fmt_idx_expr, fmt_license, clog2
+    from peakrdl_rawheader.utils import fmt_hex, fmt_addr_expr, fmt_idx_expr, fmt_license
 %>\
 % if license_str is not None:
 ${fmt_license(license_str)}
@@ -38,7 +38,7 @@ localparam longint unsigned ${"_".join(reg["name"] + ["num"]).upper()} = ${fmt_h
 % endfor
 
 % for enum in enums:
-<% enum_width = clog2(len(enum["choices"])) %>
+<% enum_width = enum["width"] %>
 typedef enum logic [${enum_width-1}:0] {
 % for field in enum["choices"]:
     ${field["name"].upper()} = ${enum_width}'d${field["value"]}${"," if not loop.last else ""}
