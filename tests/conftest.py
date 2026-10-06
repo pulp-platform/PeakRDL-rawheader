@@ -14,9 +14,12 @@ from peakrdl_rawheader.__peakrdl__ import HeaderGeneratorDescriptor
 INPUT_DIR = Path(__file__).parent / "input"
 OUTPUT_DIR = Path(__file__).parent / "output"
 
+EXTENSIONS = {"c": "h", "svh": "svh", "svpkg": "sv", "ldh": "ldh"}
+
 
 def default_options(format, **overrides):
     options = {
+        "output": "top." + EXTENSIONS[format],
         "template": None,
         "base_name": None,
         "format": format,
