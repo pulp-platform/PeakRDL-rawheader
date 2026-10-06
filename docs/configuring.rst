@@ -26,7 +26,7 @@ the output path), the following exporter-specific options are available.
 
 .. option:: --base-name <name>
 
-    Custom prefix for the generated symbols and the include guard. Defaults to
+    Custom prefix for the generated symbols. Defaults to
     the name of the top-level ``addrmap``. Mutually exclusive with
     :option:`--no-prefix`.
 

@@ -31,7 +31,8 @@ C Header (``c``)
 ----------------
 
 The default format. Emits base addresses, sizes, offsets, and enum encodings as
-C preprocessor ``#define`` macros, wrapped in an include guard.
+C preprocessor ``#define`` macros, wrapped in an include guard derived from the
+output file name (``top.h`` becomes ``TOP_H``).
 
 .. code-block:: bash
 

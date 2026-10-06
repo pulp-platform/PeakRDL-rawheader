@@ -69,12 +69,16 @@ def test_example_ldh_no_prefix():
 
 
 def test_example_c_base_name():
-    generated = generate_header(INPUT_DIR / "example.rdl", "c", base_name="custom")
+    generated = generate_header(
+        INPUT_DIR / "example.rdl", "c", base_name="custom", output="custom.h"
+    )
     check_header(generated, OUTPUT_DIR / "example.base_name.h")
 
 
 def test_example_svh_base_name():
-    generated = generate_header(INPUT_DIR / "example.rdl", "svh", base_name="custom")
+    generated = generate_header(
+        INPUT_DIR / "example.rdl", "svh", base_name="custom", output="custom.svh"
+    )
     check_header(generated, OUTPUT_DIR / "example.base_name.svh")
 
 
@@ -86,6 +90,20 @@ def test_example_svpkg_base_name():
 def test_example_ldh_base_name():
     generated = generate_header(INPUT_DIR / "example.rdl", "ldh", base_name="custom")
     check_header(generated, OUTPUT_DIR / "example.base_name.ldh")
+
+
+def test_example_c_header_guard():
+    generated = generate_header(
+        INPUT_DIR / "example.rdl", "c", output="build/top-addr.h"
+    )
+    check_header(generated, OUTPUT_DIR / "example.header_guard.h")
+
+
+def test_example_svh_header_guard():
+    generated = generate_header(
+        INPUT_DIR / "example.rdl", "svh", output="build/top-addr.svh"
+    )
+    check_header(generated, OUTPUT_DIR / "example.header_guard.svh")
 
 
 def test_base_name_and_no_prefix_mutually_exclusive():

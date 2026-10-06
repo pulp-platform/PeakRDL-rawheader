@@ -5,6 +5,8 @@
 # Author: Michael Rogenmoser <michaero@iis.ee.ethz.ch>
 
 import argparse
+import os
+import re
 from importlib.resources import files
 
 from mako.template import Template
@@ -32,7 +34,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         arg_group.add_argument(
             "--base-name",
             default=None,
-            help="Custom prefix for generated symbols and include guard "
+            help="Custom prefix for generated symbols "
             "(defaults to top-level map name; mutually exclusive with --no-prefix)",
         )
         # INFO(fischeti): To be deprecated in favor of `--base-name`,
@@ -83,6 +85,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
             raise ValueError("--base-name and --no-prefix are mutually exclusive")
 
         top_name = options.base_name or top_node.inst_name
+        header_guard = re.sub(r"[^\w]", "_", os.path.basename(options.output)).upper()
 
         license_str = None
         if options.license_str:
@@ -118,6 +121,7 @@ class HeaderGeneratorDescriptor(ExporterSubcommandPlugin):
         # Render and write
         rendered = tmpl.render(
             top_name=top_name,
+            header_guard=header_guard,
             blocks=blocks,
             registers=registers,
             memories=memories,
