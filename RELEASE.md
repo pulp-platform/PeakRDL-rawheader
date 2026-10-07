@@ -24,7 +24,7 @@ uv lock
 
 ```bash
 git add pyproject.toml uv.lock CHANGELOG.md
-git commit -m "Release vX.Y.Z"
+git commit -m "chore: release vX.Y.Z"
 git push origin main
 ```
 
